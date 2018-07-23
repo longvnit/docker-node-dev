@@ -1,4 +1,4 @@
-FROM centos7-node-dev:latest
+FROM longvnit/centos7-node-dev:latest
 
 # make app bin
 RUN mkdir -p /app/bin
