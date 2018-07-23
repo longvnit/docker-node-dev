@@ -1,0 +1,44 @@
+version: '2'
+
+services:
+    nodeapp:
+        build:
+            context: .
+            dockerfile: Node.Dockerfile
+        container_name: "nodeapp"
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./www/html:/var/www/html:rw
+        links:
+            - redis
+            - mongo
+        environment:
+            NGINX_PORT: 80
+            NGINX_SSL_PORT: 443
+            NGINX_ACCESS_LOG: /var/log/access.log
+            NGINX_ERROR_LOG: /var/log/error.log
+            NGINX_DOCUMENT_ROOT: /var/www/html
+            SERVER_NAME: _
+            SERVICE_URL: http://127.0.0.1:5000
+    redis:
+        container_name: redis
+        image: redis
+        hostname: redis
+        volumes:
+            - ./data/redis:/data
+        ports:
+            - "6379:6379"
+    mongo:
+        container_name: mongo
+        image: mongo:latest
+        ports:
+            - "27017:27017"
+        environment:
+            - MONGO_DATA_DIR=/data/db
+            - MONGO_LOG_DIR=/dev/null
+        volumes:
+            - ./data/mongo:/data/db
+        command: mongod --smallfiles --logpath=/dev/null # --quiet
+
