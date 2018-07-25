@@ -4,13 +4,11 @@ FROM longvnit/centos7-node-dev:latest
 RUN mkdir -p /app/bin
 
 # Copy config
-COPY ./confd /etc/confd
 COPY ./bin/* /app/bin/
 RUN chmod +x /app/bin/*
 
 ENTRYPOINT ["/app/bin/prepare.sh"]
 
-EXPOSE 80
-EXPOSE 443
+EXPOSE 5000
 
-CMD ["/app/bin/run.sh"]
+CMD tail -f /dev/null

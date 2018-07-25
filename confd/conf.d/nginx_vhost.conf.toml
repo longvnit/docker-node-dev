@@ -1,3 +1,0 @@
-[template]
-src = "nginx_vhost.conf.tmpl"
-dest = "/webserver/nginx/conf/sites-enabled/nginx_vhost.conf"

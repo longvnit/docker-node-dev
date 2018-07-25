@@ -1,17 +1,14 @@
 #!/usr/bin/env bash
 
-# Re-config Nginx
+# run confd config 
+if [ -d /etc/confd/conf.d ]; then 
+	echo '> Run confd config'
+	confd -onetime -backend env
+fi
 
-echo '> Run confd ...'
-confd -onetime -backend env
-
-# Work with Node service
-cd $NGINX_DOCUMENT_ROOT
-
-# Run init script
-if [ -e "$NGINX_DOCUMENT_ROOT/init.sh" ]; then
-	chmod +x "$NGINX_DOCUMENT_ROOT/init.sh"
-	sh "$NGINX_DOCUMENT_ROOT/init.sh"
+if [ -e "${SERVICE_INIT_SCRIPT}" ]; then
+	echo '> Exec service init script ...'
+	sh "${SERVICE_INIT_SCRIPT}"
 fi
 
 exec "$@"
